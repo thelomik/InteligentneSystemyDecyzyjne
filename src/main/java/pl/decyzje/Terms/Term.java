@@ -18,7 +18,7 @@ public final class Term implements DocumentVisitor {
 
     @Override
     public void visit(Document document) throws ISMException {
-        documentOccurrences.put(document.getName(), document.countOccurrences(this));
+        documentOccurrences.put(document.getName(), document.countAppearances(this));
     }
 
     public int getOccurrences(Document.Name name) throws ISMException {

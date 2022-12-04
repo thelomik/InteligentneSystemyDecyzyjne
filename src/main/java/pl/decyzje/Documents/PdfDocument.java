@@ -31,14 +31,14 @@ final class PdfDocument implements Document {
 
 
     @Override
-    public int countOccurrences(Term term) throws ISMException {
-        int occurances = 0;
+    public int countAppearances(Term term) throws ISMException {
+        int appearances = 0;
         for (var page : this.pages) {
             var splits = page.split(term.value);
             if(splits.length > 0)
-                occurances += splits.length - 1;
+                appearances += splits.length - 1;
         }
-        return occurances;
+        return appearances;
     }
 
     @Override
