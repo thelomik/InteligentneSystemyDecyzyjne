@@ -14,10 +14,9 @@ final class PdfDocument implements Document {
 
     public final Name name;
     private final List<String> pages = new LinkedList<>();
-
+ private int n = 1;
     PdfDocument(Name name, Path pdfPath) {
         this.name = name;
-        System.out.println("Loading doc: " + name.name());
         try {
             PdfReader reader = new PdfReader(pdfPath.toAbsolutePath().toString());
             for (int pageNo = 1; pageNo <= reader.getNumberOfPages(); pageNo++) {

@@ -5,8 +5,8 @@ import pl.decyzje.Terms.Term;
 
 import java.util.ArrayList;
 
-public class Manhatan extends Distance{
-    public Manhatan(ArrayList<Term> terms) {
+public class Manhattan extends Distance{
+    public Manhattan(ArrayList<Term> terms) {
         super(terms);
     }
 

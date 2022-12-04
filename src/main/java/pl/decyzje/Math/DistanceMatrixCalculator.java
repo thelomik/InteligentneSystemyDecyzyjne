@@ -31,14 +31,14 @@ public final class DistanceMatrixCalculator {
         return distancesMatrix;
     }
 
-    public static DistanceMatrixCalculator euklides(ArrayList<Document> documents, ArrayList<Term> terms) {
+    public static DistanceMatrixCalculator euclides(ArrayList<Document> documents, ArrayList<Term> terms) {
         final var euclidesCalculator = new Euclides(terms);
         return new DistanceMatrixCalculator(euclidesCalculator, documents);
     }
 
-    public static DistanceMatrixCalculator manhatan(ArrayList<Document> documents, ArrayList<Term> terms) {
-        final var manhatanCalculator = new Manhatan(terms);
-        return new DistanceMatrixCalculator(manhatanCalculator, documents);
+    public static DistanceMatrixCalculator manhattan(ArrayList<Document> documents, ArrayList<Term> terms) {
+        final var manhattanCalculator = new Manhattan(terms);
+        return new DistanceMatrixCalculator(manhattanCalculator, documents);
     }
 
     public static DistanceMatrixCalculator czebyszew(ArrayList<Document> documents, ArrayList<Term> terms) {
@@ -47,7 +47,7 @@ public final class DistanceMatrixCalculator {
     }
 
     public static DistanceMatrixCalculator
-    euklidesZoom(ArrayList<Document> documents, ArrayList<Term> terms, int pow, int sqrt) {
-        final var euklidesZoomCalc = new EuclidesZoom(terms, pow, sqrt);
-        return new DistanceMatrixCalculator(euklidesZoomCalc, documents);
+    euclidesZoom(ArrayList<Document> documents, ArrayList<Term> terms, int pow, int sqrt) {
+        final var euclidesZoomCalc = new EuclidesZoom(terms, pow, sqrt);
+        return new DistanceMatrixCalculator(euclidesZoomCalc, documents);
 }}

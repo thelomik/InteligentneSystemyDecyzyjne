@@ -4,12 +4,10 @@ import com.google.common.collect.Lists;
 import pl.decyzje.Documents.Document;
 import pl.decyzje.Documents.DocumentFactory;
 import pl.decyzje.Exceptions.ISMException;
-import pl.decyzje.Math.Distance;
 import pl.decyzje.Math.DistanceMatrixCalculator;
 import pl.decyzje.Terms.Term;
 
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
 
 public class Main {
     public static void main(String[] args) throws ISMException {
@@ -25,6 +23,7 @@ public class Main {
                 new Term("board"),
                 new Term("strategy"));
         final var docs = Lists.newArrayList(
+//                DocumentFactory.createDocument("User vector", "Documents/user_vector.pdf"),
                 DocumentFactory.createDocument("D0", "Documents/D0.pdf"),
                 DocumentFactory.createDocument("D1", "Documents/D1.pdf"),
                 DocumentFactory.createDocument("D2", "Documents/D2.pdf"),
@@ -38,7 +37,7 @@ public class Main {
                 DocumentFactory.createDocument("D10", "Documents/D10.pdf"),
                 DocumentFactory.createDocument("D11", "Documents/D11.pdf"),
                 DocumentFactory.createDocument("D12", "Documents/D12.pdf")
-//                DocumentFactory.createDocument("User vector", "D:\\InteligentneSystemyDecyzyjne\\InteligentneSystemyDecyzyjne\\Documents\\D11.pdf")
+
         );
         for (final var term : terms) {
             for (final var doc : docs) {
@@ -49,75 +48,94 @@ public class Main {
         }
 
         for (final Term term : terms) {
-            java.lang.System.out.printf("%-12s ->[", term.value);
+            java.lang.System.out.printf("| %-12s->", term.value);
             for (Document doc : docs) {
                 term.visit(doc);
-                java.lang.System.out.printf("%-3s: %-5d, ", doc.getName().name(), term.getOccurrences(doc.getName()));
+                java.lang.System.out.printf("| %-3s: %-5d", doc.getName().name(), term.getOccurrences(doc.getName()) );
             }
-            java.lang.System.out.print("]\n");
+            java.lang.System.out.print("|\n");
+            System.out.println("---------------------------------------------------------------------------------------" +
+                    "---------------------------------------------------------------------------------------------------" +
+                    "-------");
         }
 
-        printEuklidesDistanceMatrix(docs, terms);
-        printEuklidesZoomDistanceMatrix(docs,terms,2,3);
-        printBestMatch(docs,terms);
-        printManhatanDistanceMatrix(docs,terms);
-        printCzebyszewDistanceMatrix(docs,terms);
+        printEuclidesDistanceMatrix(docs, terms);
+        printEuclidesZoomDistanceMatrix(docs, terms, 2, 3);
+
+        printManhattanDistanceMatrix(docs, terms);
+        printCzebyszewDistanceMatrix(docs, terms);
+        printBestMatch(docs, terms);
     }
 
-    private static void printEuklidesDistanceMatrix(ArrayList<Document> docs, ArrayList<Term> terms) throws ISMException {
-        java.lang.System.out.print("\n Euklides: \n");
-        final var euklidesDistanceMatrix = DistanceMatrixCalculator.euklides(docs, terms);
-        final var distancesMatrix = euklidesDistanceMatrix.calcDistancesBetweenDocs();
+    private static void printEuclidesDistanceMatrix(ArrayList<Document> docs, ArrayList<Term> terms) throws ISMException {
+        java.lang.System.out.print("\n Euclides: \n");
+        final var euclidesDistanceMatrix = DistanceMatrixCalculator.euclides(docs, terms);
+        final var distancesMatrix = euclidesDistanceMatrix.calcDistancesBetweenDocs();
         for (var distances : distancesMatrix) {
-            java.lang.System.out.print(distances.doc().getName().name() + " -> [");
+            java.lang.System.out.print("| "+ distances.doc().getName().name() + " -> ");
             for (var key : distances.distancesTo().keySet()) {
-                java.lang.System.out.printf("%-3s: %-8.2f, ", key.getName().name(), distances.distancesTo().get(key));
+                java.lang.System.out.printf("| %-3s: %-8.2f", key.getName().name(), distances.distancesTo().get(key));
             }
-            java.lang.System.out.print("]\n");
+            java.lang.System.out.print("|\n");
+            System.out.println("---------------------------------------------------------------------------------------" +
+                    "---------------------------------------------------------------------------------------------------" +
+                    "-----------------------------------------");
         }
     }
 
     private static void printCzebyszewDistanceMatrix(ArrayList<Document> docs, ArrayList<Term> terms) throws ISMException {
-        java.lang.System.out.print("\n Czebyszew: \n");
-        final var euklidesDistanceMatrix = DistanceMatrixCalculator.czebyszew(docs, terms);
-        final var distancesMatrix = euklidesDistanceMatrix.calcDistancesBetweenDocs();
+        System.out.print("\n Czebyszew: \n");
+        final var czebyszewDistanceMatrix = DistanceMatrixCalculator.czebyszew(docs, terms);
+        final var distancesMatrix = czebyszewDistanceMatrix.calcDistancesBetweenDocs();
         for (var distances : distancesMatrix) {
-            java.lang.System.out.print(distances.doc().getName().name() + " -> [");
+           System.out.print("|"+distances.doc().getName().name() + " ->");
             for (var key : distances.distancesTo().keySet()) {
-                java.lang.System.out.printf("%-3s: %-8.2f, ", key.getName().name(), distances.distancesTo().get(key));
+                java.lang.System.out.printf("| %-3s: %-8.2f", key.getName().name(), distances.distancesTo().get(key));
             }
-            java.lang.System.out.print("]\n");
+            System.out.print("|\n");
+            System.out.println("---------------------------------------------------------------------------------------" +
+                    "---------------------------------------------------------------------------------------------------" +
+                    "---------------------------------------");
         }
     }
-        private static void printManhatanDistanceMatrix(ArrayList<Document> docs, ArrayList<Term> terms) throws ISMException {
-            java.lang.System.out.print("\n Manhatan: \n");
-            final var euklidesDistanceMatrix = DistanceMatrixCalculator.manhatan(docs, terms);
-            final var distancesMatrix = euklidesDistanceMatrix.calcDistancesBetweenDocs();
-            for (var distances : distancesMatrix) {
-                java.lang.System.out.print(distances.doc().getName().name() + " -> [");
-                for (var key : distances.distancesTo().keySet()) {
-                    java.lang.System.out.printf("%-3s: %-8.2f, ", key.getName().name(), distances.distancesTo().get(key));
-                }
-                java.lang.System.out.print("]\n");
+
+    private static void printManhattanDistanceMatrix(ArrayList<Document> docs, ArrayList<Term> terms) throws ISMException {
+        System.out.print("\n Manhattan: \n");
+        final var manhattanDistanceMatrix = DistanceMatrixCalculator.manhattan(docs, terms);
+        final var distancesMatrix = manhattanDistanceMatrix.calcDistancesBetweenDocs();
+        for (var distances : distancesMatrix) {
+            System.out.print("|"+distances.doc().getName().name() + " ->");
+            for (var key : distances.distancesTo().keySet()) {
+                System.out.printf("|%-3s: %-8.2f", key.getName().name(), distances.distancesTo().get(key));
             }
+            System.out.print("|\n");
+            System.out.println("---------------------------------------------------------------------------------------" +
+                    "---------------------------------------------------------------------------------------------------" +
+                    "-------------------------");
         }
-        private static void printEuklidesZoomDistanceMatrix(ArrayList<Document> docs, ArrayList<Term> terms, int pow, int sqrt) throws ISMException {
-            java.lang.System.out.printf("\n Euklides zoom pow %d, sqrt %d : \n", pow, sqrt);
-            final var euklidesDistanceMatrix =
-                    DistanceMatrixCalculator.euklidesZoom(docs, terms, pow, sqrt);
-            final var distancesMatrix = euklidesDistanceMatrix.calcDistancesBetweenDocs();
-            for (var distances : distancesMatrix) {
-                java.lang.System.out.print(distances.doc().getName().name() + " -> [");
-                for (var key : distances.distancesTo().keySet()) {
-                    java.lang.System.out.printf("%-3s: %-8.2f, ", key.getName().name(), distances.distancesTo().get(key));
-                }
-                java.lang.System.out.print("]\n");
+    }
+
+    private static void printEuclidesZoomDistanceMatrix(ArrayList<Document> docs, ArrayList<Term> terms, int pow, int sqrt) throws ISMException {
+        System.out.printf("\n Euclides zoom pow %d, sqrt %d : \n", pow, sqrt);
+        final var euclidesZoomDistanceMatrix =
+                DistanceMatrixCalculator.euclidesZoom(docs, terms, pow, sqrt);
+        final var distancesMatrix = euclidesZoomDistanceMatrix.calcDistancesBetweenDocs();
+        for (var distances : distancesMatrix) {
+            System.out.print("|"+distances.doc().getName().name() + " ->");
+            for (var key : distances.distancesTo().keySet()) {
+                System.out.printf("|%-3s: %-8.2f", key.getName().name(), distances.distancesTo().get(key));
             }
+            System.out.print("|\n");
+            System.out.println("---------------------------------------------------------------------------------------" +
+                    "---------------------------------------------------------------------------------------------------" +
+                    "-------------------------");
         }
+    }
+
     private static void printBestMatch(ArrayList<Document> docs, ArrayList<Term> terms) throws ISMException {
-        java.lang.System.out.print("\n\n");
-        final var euklidesDistanceMatrix = DistanceMatrixCalculator.euklides(docs, terms);
-        final var distancesMatrix = euklidesDistanceMatrix.calcDistancesBetweenDocs();
+       System.out.print("\n\n");
+        final var euclidesDistanceMatrix = DistanceMatrixCalculator.manhattan(docs, terms);
+        final var distancesMatrix = euclidesDistanceMatrix.calcDistancesBetweenDocs();
         for (final var distances : distancesMatrix) {
             DistanceMatrixCalculator.Distances userVectorDistances;
             if (distances.doc().getName().name().equals("User vector")) {
@@ -129,11 +147,13 @@ public class Main {
                             && !doc.getName().name().equals("User vector"))
                         closestDoc = doc;
                 }
-                java.lang.System.out.println("Best Document similarity match is: " + closestDoc.getName().name() + "\n Based on the distance to other documents counted throughout various distance algorithms");
+                System.out.println("----------------------------------");
+                System.out.println("| User vector is similar to : " + closestDoc.getName().name() +" |");
+                System.out.println("----------------------------------");
             }
         }
 
     }
-    }
+}
 
 
