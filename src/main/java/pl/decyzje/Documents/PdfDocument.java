@@ -14,7 +14,7 @@ final class PdfDocument implements Document {
 
     public final Name name;
     private final List<String> pages = new LinkedList<>();
- private int n = 1;
+    private int n = 1;
     PdfDocument(Name name, Path pdfPath) {
         this.name = name;
         try {

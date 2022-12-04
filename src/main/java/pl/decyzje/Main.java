@@ -22,8 +22,9 @@ public class Main {
                 new Term("opponent"),
                 new Term("board"),
                 new Term("strategy"));
+
         final var docs = Lists.newArrayList(
-//                DocumentFactory.createDocument("User vector", "Documents/user_vector.pdf"),
+                DocumentFactory.createDocument("User vector", "Documents/user_vector2.pdf"),
                 DocumentFactory.createDocument("D0", "Documents/D0.pdf"),
                 DocumentFactory.createDocument("D1", "Documents/D1.pdf"),
                 DocumentFactory.createDocument("D2", "Documents/D2.pdf"),
@@ -51,7 +52,7 @@ public class Main {
             java.lang.System.out.printf("| %-12s->", term.value);
             for (Document doc : docs) {
                 term.visit(doc);
-                java.lang.System.out.printf("| %-3s: %-5d", doc.getName().name(), term.getOccurrences(doc.getName()) );
+                java.lang.System.out.printf("| %-3s: %-5d", doc.getName().name(), term.getOccurrences(doc.getName()));
             }
             java.lang.System.out.print("|\n");
             System.out.println("---------------------------------------------------------------------------------------" +
@@ -59,20 +60,19 @@ public class Main {
                     "-------");
         }
 
-        printEuclidesDistanceMatrix(docs, terms);
-        printEuclidesZoomDistanceMatrix(docs, terms, 2, 3);
-
-        printManhattanDistanceMatrix(docs, terms);
-        printCzebyszewDistanceMatrix(docs, terms);
+        printEuclides(docs, terms);
+        printEuclidesZoom(docs, terms, 2, 3);
+        printManhattan(docs, terms);
+        printCzebyszew(docs, terms);
         printBestMatch(docs, terms);
     }
 
-    private static void printEuclidesDistanceMatrix(ArrayList<Document> docs, ArrayList<Term> terms) throws ISMException {
+    private static void printEuclides(ArrayList<Document> docs, ArrayList<Term> terms) throws ISMException {
         java.lang.System.out.print("\n Euclides: \n");
         final var euclidesDistanceMatrix = DistanceMatrixCalculator.euclides(docs, terms);
         final var distancesMatrix = euclidesDistanceMatrix.calcDistancesBetweenDocs();
         for (var distances : distancesMatrix) {
-            java.lang.System.out.print("| "+ distances.doc().getName().name() + " -> ");
+            java.lang.System.out.print("| " + distances.doc().getName().name() + " -> ");
             for (var key : distances.distancesTo().keySet()) {
                 java.lang.System.out.printf("| %-3s: %-8.2f", key.getName().name(), distances.distancesTo().get(key));
             }
@@ -83,12 +83,12 @@ public class Main {
         }
     }
 
-    private static void printCzebyszewDistanceMatrix(ArrayList<Document> docs, ArrayList<Term> terms) throws ISMException {
+    private static void printCzebyszew(ArrayList<Document> docs, ArrayList<Term> terms) throws ISMException {
         System.out.print("\n Czebyszew: \n");
         final var czebyszewDistanceMatrix = DistanceMatrixCalculator.czebyszew(docs, terms);
         final var distancesMatrix = czebyszewDistanceMatrix.calcDistancesBetweenDocs();
         for (var distances : distancesMatrix) {
-           System.out.print("|"+distances.doc().getName().name() + " ->");
+            System.out.print("|" + distances.doc().getName().name() + " ->");
             for (var key : distances.distancesTo().keySet()) {
                 java.lang.System.out.printf("| %-3s: %-8.2f", key.getName().name(), distances.distancesTo().get(key));
             }
@@ -99,12 +99,12 @@ public class Main {
         }
     }
 
-    private static void printManhattanDistanceMatrix(ArrayList<Document> docs, ArrayList<Term> terms) throws ISMException {
+    private static void printManhattan(ArrayList<Document> docs, ArrayList<Term> terms) throws ISMException {
         System.out.print("\n Manhattan: \n");
         final var manhattanDistanceMatrix = DistanceMatrixCalculator.manhattan(docs, terms);
         final var distancesMatrix = manhattanDistanceMatrix.calcDistancesBetweenDocs();
         for (var distances : distancesMatrix) {
-            System.out.print("|"+distances.doc().getName().name() + " ->");
+            System.out.print("|" + distances.doc().getName().name() + " ->");
             for (var key : distances.distancesTo().keySet()) {
                 System.out.printf("|%-3s: %-8.2f", key.getName().name(), distances.distancesTo().get(key));
             }
@@ -115,13 +115,13 @@ public class Main {
         }
     }
 
-    private static void printEuclidesZoomDistanceMatrix(ArrayList<Document> docs, ArrayList<Term> terms, int pow, int sqrt) throws ISMException {
+    private static void printEuclidesZoom(ArrayList<Document> docs, ArrayList<Term> terms, int pow, int sqrt) throws ISMException {
         System.out.printf("\n Euclides zoom pow %d, sqrt %d : \n", pow, sqrt);
         final var euclidesZoomDistanceMatrix =
                 DistanceMatrixCalculator.euclidesZoom(docs, terms, pow, sqrt);
         final var distancesMatrix = euclidesZoomDistanceMatrix.calcDistancesBetweenDocs();
         for (var distances : distancesMatrix) {
-            System.out.print("|"+distances.doc().getName().name() + " ->");
+            System.out.print("|" + distances.doc().getName().name() + " ->");
             for (var key : distances.distancesTo().keySet()) {
                 System.out.printf("|%-3s: %-8.2f", key.getName().name(), distances.distancesTo().get(key));
             }
@@ -133,7 +133,7 @@ public class Main {
     }
 
     private static void printBestMatch(ArrayList<Document> docs, ArrayList<Term> terms) throws ISMException {
-       System.out.print("\n\n");
+        System.out.print("\n\n");
         final var euclidesDistanceMatrix = DistanceMatrixCalculator.manhattan(docs, terms);
         final var distancesMatrix = euclidesDistanceMatrix.calcDistancesBetweenDocs();
         for (final var distances : distancesMatrix) {
@@ -148,7 +148,7 @@ public class Main {
                         closestDoc = doc;
                 }
                 System.out.println("----------------------------------");
-                System.out.println("| User vector is similar to : " + closestDoc.getName().name() +" |");
+                System.out.println("| User vector is similar to : " + closestDoc.getName().name() + " |");
                 System.out.println("----------------------------------");
             }
         }
