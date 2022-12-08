@@ -1,16 +1,20 @@
 package pl.decyzje.Documents;
 
-import pl.decyzje.Exceptions.ISMException;
 
+
+import java.io.FileNotFoundException;
 import java.nio.file.Path;
 
 public final class DocumentFactory {
 
-    public static Document createDocument(String uniqueName, String source) throws ISMException {
+    public static Document createDocument(String uniqueName, String source) throws RuntimeException, FileNotFoundException {
         if (source.endsWith(".pdf"))
             return new PdfDocument(new Document.Name(uniqueName), Path.of(source));
 
-        throw new ISMException("Could not create document of certain type. Supported types are .pdf, .txt or existing WebPage");
+
+
+
+        throw new RuntimeException("Could not create document of certain type. Supported types are .pdf, .txt or existing WebPage");
     }
 
 }

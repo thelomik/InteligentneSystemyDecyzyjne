@@ -3,7 +3,6 @@ package pl.decyzje.Math;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import pl.decyzje.Documents.Document;
-import pl.decyzje.Exceptions.ISMException;
 import pl.decyzje.Terms.Term;
 
 import java.util.ArrayList;
@@ -18,7 +17,7 @@ public final class DistanceMatrixCalculator {
     private final ArrayList<Document> documents;
     public record Distances(Document doc, LinkedHashMap<Document, Double> distancesTo){}
 
-    public Set<Distances> calcDistancesBetweenDocs() throws ISMException {
+    public Set<Distances> calcDistancesBetweenDocs() throws RuntimeException {
         final var distancesMatrix = new LinkedHashSet<Distances>();
         for (Document doc1 : this.documents) {
             final var distancesToOthers = new LinkedHashMap<Document, Double>();

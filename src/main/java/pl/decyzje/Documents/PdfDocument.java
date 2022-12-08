@@ -2,7 +2,6 @@ package pl.decyzje.Documents;
 
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.parser.PdfTextExtractor;
-import pl.decyzje.Exceptions.ISMException;
 import pl.decyzje.Terms.Term;
 
 import java.io.IOException;
@@ -24,14 +23,15 @@ final class PdfDocument implements Document {
                 this.pages.add(textFromPage);
             }
         }catch (IOException e) {
-            throw new RuntimeException(new ISMException(String.format("Could not read PDF: %s", pdfPath), e));
+            throw new RuntimeException(new RuntimeException(String.format("Could not read PDF: %s", pdfPath), e));
         }
     }
 
 
 
+
     @Override
-    public int countAppearances(Term term) throws ISMException {
+    public int countAppearances(Term term) throws RuntimeException {
         int appearances = 0;
         for (var page : this.pages) {
             var splits = page.split(term.value);

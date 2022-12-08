@@ -1,6 +1,5 @@
 package pl.decyzje.Math;
 
-import pl.decyzje.Exceptions.ISMException;
 import pl.decyzje.Terms.Term;
 
 import java.util.ArrayList;
@@ -14,7 +13,7 @@ public class Euclides extends Distance{
     }
 
     @Override
-    double distanceBetween(DocsPair docsPair) throws ISMException {
+    double distanceBetween(DocsPair docsPair) throws RuntimeException {
         var sum = 0d;
         for (Term term : super.terms) {
             var diff =

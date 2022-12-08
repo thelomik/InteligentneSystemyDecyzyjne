@@ -1,6 +1,5 @@
 package pl.decyzje.Math;
 
-import pl.decyzje.Exceptions.ISMException;
 import pl.decyzje.Terms.Term;
 
 import java.util.ArrayList;
@@ -16,7 +15,7 @@ public class EuclidesZoom extends Distance{
     }
 
     @Override
-    double distanceBetween(Distance.DocsPair docsPair) throws ISMException {
+    double distanceBetween(Distance.DocsPair docsPair) throws RuntimeException {
         var sum = 0d;
         for (Term term : super.terms) {
             var diff =
