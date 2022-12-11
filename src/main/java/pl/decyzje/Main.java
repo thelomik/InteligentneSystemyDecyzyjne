@@ -23,7 +23,7 @@ public class Main {
                 new Term("strategy"));
 
         
-        final var docs = Lists.newArrayList(DocumentFactory.createDocument("User vector", "Documents/user_vector.pdf"),
+        final var docs = Lists.newArrayList(DocumentFactory.createDocument("uv", "Documents/user_vector.pdf"),
                 DocumentFactory.createDocument("D0", "Documents/D0.pdf"),
                 DocumentFactory.createDocument("D1", "Documents/D1.pdf"),
                 DocumentFactory.createDocument("D2", "Documents/D2.pdf"),
@@ -34,9 +34,9 @@ public class Main {
                 DocumentFactory.createDocument("D7", "Documents/D6.pdf"),
                 DocumentFactory.createDocument("D8", "Documents/D8.pdf"),
                 DocumentFactory.createDocument("D9", "Documents/D9.pdf"),
-                DocumentFactory.createDocument("D10", "Documents/D10.pdf"),
-                DocumentFactory.createDocument("D11", "Documents/D11.pdf"),
-                DocumentFactory.createDocument("D12", "Documents/D12.pdf")
+                DocumentFactory.createDocument("10", "Documents/D10.pdf"),
+                DocumentFactory.createDocument("11", "Documents/D11.pdf"),
+                DocumentFactory.createDocument("12", "Documents/D12.pdf")
 
 
         );
@@ -49,15 +49,13 @@ public class Main {
         }
 
         for (final Term term : terms) {
-            java.lang.System.out.printf("| %-12s->", term.value);
+            java.lang.System.out.printf("\t %-12s->", term.value);
             for (Document doc : docs) {
                 term.visit(doc);
-                java.lang.System.out.printf("| %-3s: %-5d", doc.getName().name(), term.getOccurrences(doc.getName()));
+                java.lang.System.out.printf("\t %-3s: %-5d", doc.getName().name(), term.getOccurrences(doc.getName()));
             }
-            java.lang.System.out.print("|\n");
-            System.out.println("---------------------------------------------------------------------------------------"
-                    + "---------------------------------------------------------------------------------------------------"
-                    + "-------");
+            java.lang.System.out.print("\n");
+
         }
 
         printEuclides(docs, terms);
@@ -72,14 +70,12 @@ public class Main {
         final var euclidesDistanceMatrix = DistanceMatrixCalculator.euclides(docs, terms);
         final var distancesMatrix = euclidesDistanceMatrix.calcDistancesBetweenDocs();
         for (var distances : distancesMatrix) {
-            java.lang.System.out.print("| " + distances.doc().getName().name() + " -> ");
+            java.lang.System.out.print("\t " + distances.doc().getName().name() + " -> ");
             for (var key : distances.distancesTo().keySet()) {
-                java.lang.System.out.printf("| %-3s: %-8.2f", key.getName().name(), distances.distancesTo().get(key));
+                java.lang.System.out.printf("\t %-3s: %-8.2f", key.getName().name(), distances.distancesTo().get(key));
             }
-            java.lang.System.out.print("|\n");
-            System.out.println("---------------------------------------------------------------------------------------"
-                    + "---------------------------------------------------------------------------------------------------"
-                    + "-----------------------------------------");
+            java.lang.System.out.print("\n");
+
         }
     }
 
@@ -88,14 +84,12 @@ public class Main {
         final var czebyszewDistanceMatrix = DistanceMatrixCalculator.czebyszew(docs, terms);
         final var distancesMatrix = czebyszewDistanceMatrix.calcDistancesBetweenDocs();
         for (var distances : distancesMatrix) {
-            System.out.print("|" + distances.doc().getName().name() + " ->");
+            System.out.print("\t" + distances.doc().getName().name() + " ->");
             for (var key : distances.distancesTo().keySet()) {
-                java.lang.System.out.printf("| %-3s: %-8.2f", key.getName().name(), distances.distancesTo().get(key));
+                java.lang.System.out.printf("\t %-3s: %-8.2f", key.getName().name(), distances.distancesTo().get(key));
             }
-            System.out.print("|\n");
-            System.out.println("---------------------------------------------------------------------------------------"
-                    + "---------------------------------------------------------------------------------------------------"
-                    + "---------------------------------------");
+            System.out.print("\n");
+
         }
     }
 
@@ -104,14 +98,12 @@ public class Main {
         final var manhattanDistanceMatrix = DistanceMatrixCalculator.manhattan(docs, terms);
         final var distancesMatrix = manhattanDistanceMatrix.calcDistancesBetweenDocs();
         for (var distances : distancesMatrix) {
-            System.out.print("|" + distances.doc().getName().name() + " ->");
+            System.out.print("\t" + distances.doc().getName().name() + " ->");
             for (var key : distances.distancesTo().keySet()) {
-                System.out.printf("|%-3s: %-8.2f", key.getName().name(), distances.distancesTo().get(key));
+                System.out.printf("\t%-3s: %-8.2f", key.getName().name(), distances.distancesTo().get(key));
             }
-            System.out.print("|\n");
-            System.out.println("---------------------------------------------------------------------------------------"
-                    + "---------------------------------------------------------------------------------------------------"
-                    + "-------------------------");
+            System.out.print("\n");
+
         }
     }
 
@@ -120,14 +112,12 @@ public class Main {
         final var euclidesZoomDistanceMatrix = DistanceMatrixCalculator.euclidesZoom(docs, terms, pow, sqrt);
         final var distancesMatrix = euclidesZoomDistanceMatrix.calcDistancesBetweenDocs();
         for (var distances : distancesMatrix) {
-            System.out.print("|" + distances.doc().getName().name() + " ->");
+            System.out.print("\t" + distances.doc().getName().name() + " ->");
             for (var key : distances.distancesTo().keySet()) {
-                System.out.printf("|%-3s: %-8.2f", key.getName().name(), distances.distancesTo().get(key));
+                System.out.printf("\t%-3s: %-8.2f", key.getName().name(), distances.distancesTo().get(key));
             }
-            System.out.print("|\n");
-            System.out.println("---------------------------------------------------------------------------------------"
-                    + "---------------------------------------------------------------------------------------------------"
-                    + "-------------------------");
+            System.out.print("\n");
+
         }
     }
 
@@ -139,20 +129,20 @@ public class Main {
         DistanceMatrixCalculator.Distances userVectorDistances = null;
         for (final var distances : distancesMatrix) {
 
-            if (distances.doc().getName().name().equals("User vector")) {
+            if (distances.doc().getName().name().equals("uv")) {
                 userVectorDistances = distances;
 
                 for (final var doc : userVectorDistances.distancesTo().keySet()) {
                     double distance = userVectorDistances.distancesTo().get(doc);
-                    if ((closestDoc == null || distance < userVectorDistances.distancesTo().get(closestDoc)) && !doc.getName().name().equals("User vector"))
+                    if ((closestDoc == null || distance < userVectorDistances.distancesTo().get(closestDoc)) && !doc.getName().name().equals("uv"))
                         closestDoc = doc;
                 }
             }
         }
-        System.out.println("----------------------------------");
-        System.out.println("| User vector is similar to : " + closestDoc.getName().name() + " |");
-        System.out.println(userVectorDistances.distancesTo().get(closestDoc));
-        System.out.println("----------------------------------");
+        System.out.println("\t----------------------------------");
+        System.out.println("\t User vector is similar to : " + closestDoc.getName().name());
+        System.out.println("\t "+userVectorDistances.distancesTo().get(closestDoc));
+        System.out.println("\t----------------------------------");
     }
 }
 
